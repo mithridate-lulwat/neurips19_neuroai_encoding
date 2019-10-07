@@ -1,6 +1,7 @@
 Companion code for the accepted paper at NeurIPS'19 Workshop "Real Neurons & Hidden Units: Future directions at the intersection of neuroscience and artificial intelligence".
 
-"Estimating encoding models of cortical auditory processing using naturalistic stimuli and transfer learning"
+["Estimating encoding models of cortical auditory processing using naturalistic stimuli and transfer learning"](https://openreview.net/forum?id=SyxENQtL8H "Link to paper on OpenReview.net")
+
 
 Our encoding models are trained on SoundNet features. We provided the SoundNet features, and also explain the method to regenerate them in step 1.
 
