@@ -1,4 +1,4 @@
-Companion code for the anonymous submission for NeurIPS'19 Workshop "Real Neurons & Hidden Units: Future directions at the intersection of neuroscience and artificial intelligence".
+Companion code for the accepted paper at NeurIPS'19 Workshop "Real Neurons & Hidden Units: Future directions at the intersection of neuroscience and artificial intelligence".
 
 "Estimating encoding models of cortical auditory processing using naturalistic stimuli and transfer learning"
 
