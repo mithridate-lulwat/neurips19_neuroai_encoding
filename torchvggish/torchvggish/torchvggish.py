@@ -6,7 +6,7 @@ VGGISH_WEIGHTS = "https://github.com/harritaylor/torchvggish/" \
                  "releases/download/v0.1/vggish-10086976.pth"
 PCA_PARAMS = "https://github.com/harritaylor/torchvggish/" \
              "releases/download/v0.1/vggish_pca_params-970ea276.pth"
-DEVICE = torch.device("cuda:0")
+
 
 class VGG(nn.Module):
     def __init__(self, features, postprocess):
@@ -25,10 +25,7 @@ class VGG(nn.Module):
             self.pproc = Postprocessor()
 
     def forward(self, x):
-        # Pass the vector to GPU
-        x = x.to(DEVICE)
         x = self.features(x)
-        
 
         # Transpose the output from features to
         # remain compatible with vggish embeddings
@@ -58,8 +55,8 @@ class Postprocessor(object):
     def __init__(self):
         """Constructs a postprocessor."""
         params = hub.load_state_dict_from_url(PCA_PARAMS)
-        self._pca_matrix = torch.as_tensor(params["pca_eigen_vectors"]).float().to(DEVICE)
-        self._pca_means = torch.as_tensor(params["pca_means"].reshape(-1, 1)).float().to(DEVICE)
+        self._pca_matrix = torch.as_tensor(params["pca_eigen_vectors"]).float()
+        self._pca_means = torch.as_tensor(params["pca_means"].reshape(-1, 1)).float()
 
     def postprocess(self, embeddings_batch):
         """Applies tensor postprocessing to a batch of embeddings.
@@ -106,6 +103,6 @@ def vggish(postprocess=True):
     embedding of a 96ms slice of audio.
     """
     model = _vgg(postprocess)
-    state_dict = hub.load_state_dict_from_url(VGGISH_WEIGHTS, progress=True, map_location=DEVICE)
+    state_dict = hub.load_state_dict_from_url(VGGISH_WEIGHTS, progress=True)
     model.load_state_dict(state_dict)
     return model

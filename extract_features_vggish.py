@@ -2,16 +2,21 @@
 from torchvggish.torchvggish import vggish_input, vggish
 import torch
 import time
-assert torch.cuda.memory_allocated() == 0
+import tqdm
 example = vggish_input.wavfile_to_examples("sherlockaudio.wav")
-print("after loading  {} available memory".format(torch.cuda.memory_allocated()))
-print('examples : ',example.shape)
-DEVICE = torch.device("cuda:0")
+length = len(example)
+print(example.shape)
+complete_embedding = torch.tensor([])
+embedding_model = vggish()
+# Divide the input in parts of xxx samples
+samples_per_part = 100
+n_parts = length // samples_per_part + 1 
+for part in tqdm.tqdm(range(n_parts)):
+    partial_example = example[samples_per_part*part:samples_per_part*(part+1)]
+    print(partial_example.shape)
+    partial_embedding = embedding_model.forward(partial_example)
+    complete_embedding = torch.cat((complete_embedding, partial_embedding))
 
-t = time.time()
-embedding_model = vggish().to(DEVICE)
-f = time.time()
-print("{:2f}".format(f-t))
-embeddings = embedding_model.forward(example)
-print("embeddings : ",embeddings.shape)
+print("embeddings : ",complete_embedding.shape)
+torch.save(complete_embedding, "sherlock_embedding.pt")
 
