@@ -14,8 +14,7 @@ n_parts = length // samples_per_part + 1
 for part in tqdm.tqdm(range(n_parts)):
     partial_example = example[samples_per_part*part:samples_per_part*(part+1)]
     print(partial_example.shape)
-    partial_embedding = embedding_model.forward(partial_example)
-    complete_embedding = torch.cat((complete_embedding, partial_embedding))
+    complete_embedding = torch.cat((complete_embedding, embedding_model.forward(partial_example)))
 
 print("embeddings : ",complete_embedding.shape)
 torch.save(complete_embedding, "sherlock_embedding.pt")
